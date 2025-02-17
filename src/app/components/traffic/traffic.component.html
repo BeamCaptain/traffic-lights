@@ -1,55 +1,147 @@
-<div class="container">
-  <p-panel header="Ampelanlage Simulation">
+<!--<div class="container">-->
+<!--  <p-panel header="Ampelanlage Simulation (realistischer Ablauf)">-->
+<!--    &lt;!&ndash; Steuerungselemente &ndash;&gt;-->
+<!--    <div class="controls">-->
+<!--      <p-button label="Ampelanlage {{ trafficSystemOn ? 'AUS' : 'EIN' }}"-->
+<!--                (onClick)="toggleTrafficSystem()">-->
+<!--      </p-button>-->
+<!--      <p-button label="Systemfehler simulieren"-->
+<!--                (onClick)="simulateSystemError()">-->
+<!--      </p-button>-->
+<!--      <p-button label="Wartungsmodus {{ maintenanceMode ? 'AUS' : 'EIN' }}"-->
+<!--                severity="danger"-->
+<!--                (onClick)="toggleMaintenanceMode()">-->
+<!--      </p-button>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Zeitsteuerung &ndash;&gt;-->
+<!--    <div class="time-control">-->
+<!--      <label>Aktuelle Zeit (manuell einstellbar): </label>-->
+<!--      <p-datePicker timeOnly="true" hourFormat="24"-->
+<!--                  [(ngModel)]="currentTime"-->
+<!--                  (onSelect)="onTimeChange($event)">-->
+<!--      </p-datePicker>-->
+<!--      <span>{{ currentTime | date:'HH:mm' }}</span>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Darstellung der Kreuzung mit zwei kompletten Ampeln &ndash;&gt;-->
+<!--    <div class="intersection-container">-->
+<!--      <div class="intersection">-->
+<!--        <div class="road horizontal"></div>-->
+<!--        <div class="road vertical"></div>-->
+
+<!--        &lt;!&ndash; Ampel für Fahrtrichtung A (oben) &ndash;&gt;-->
+<!--        <div class="traffic-light-container top">-->
+<!--          <div class="traffic-light">-->
+<!--            <div class="light red"    [ngClass]="{'active': aRedActive}"></div>-->
+<!--            <div class="light yellow" [ngClass]="{'active': aYellowActive}"></div>-->
+<!--            <div class="light green"  [ngClass]="{'active': aGreenActive}"></div>-->
+<!--          </div>-->
+<!--          <h3>Fahrtrichtung A</h3>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Ampel für Fahrtrichtung B (unten) &ndash;&gt;-->
+<!--        <div class="traffic-light-container bottom">-->
+<!--          <div class="traffic-light">-->
+<!--            <div class="light red"    [ngClass]="{'active': bRedActive}"></div>-->
+<!--            <div class="light yellow" [ngClass]="{'active': bYellowActive}"></div>-->
+<!--            <div class="light green"  [ngClass]="{'active': bGreenActive}"></div>-->
+<!--          </div>-->
+<!--          <h3>Fahrtrichtung B</h3>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Statusanzeige &ndash;&gt;-->
+<!--    <div class="status">-->
+<!--      <p>Status:-->
+<!--        <span *ngIf="!trafficSystemOn">Anlage AUS</span>-->
+<!--        <span *ngIf="systemError">Systemfehler (rot blinkend)</span>-->
+<!--        <span *ngIf="maintenanceMode && !systemError">Wartung (gelb blinkend)</span>-->
+<!--        <span *ngIf="trafficSystemOn && !systemError && !maintenanceMode">-->
+<!--          Normaler Betrieb-->
+<!--        </span>-->
+<!--      </p>-->
+<!--    </div>-->
+<!--  </p-panel>-->
+<!--</div>-->
+
+<div>
+  <p-card>
+
     <!-- Steuerungselemente -->
-    <div class="controls">
-      <p-button label="Ampelanlage {{trafficSystemOn ? 'AUS' : 'EIN'}}" (onClick)="toggleTrafficSystem()"></p-button>
-      <p-button label="Systemfehler simulieren" (onClick)="simulateSystemError()"></p-button>
-      <p-button label="Wartungsmodus {{maintenanceMode ? 'AUS' : 'EIN'}}" (onClick)="toggleMaintenanceMode()"></p-button>
+    <div class="flex flex-wrap gap-3 mb-5">
+      <p-button [label]="trafficSystemOn ? 'Ausschalten' : 'Einschalten'"
+                [severity]="trafficSystemOn ? 'warn' : 'success'"
+                icon="pi pi-power-off"
+                (onClick)="toggleTrafficSystem()"
+                [text]="true"
+      >
+      </p-button>
+
+      <p-button label="Systemfehler"
+                severity="danger"
+                icon="pi pi-exclamation-triangle"
+                (onClick)="simulateSystemError()"
+                class="mb-2"
+                [text]="true"
+      >
+      </p-button>
+
+      <p-button [label]="maintenanceMode ? 'Wartung beenden' : 'Wartung starten'"
+                severity="help"
+                icon="pi pi-cog"
+                [text]="true"
+                (onClick)="toggleMaintenanceMode()">
+      </p-button>
     </div>
 
     <!-- Zeitsteuerung -->
-    <div class="time-control">
-      <label>Aktuelle Zeit (manuell einstellbar): </label>
-      <p-datePicker timeOnly="true" hourFormat="24" [(ngModel)]="currentTime" (onSelect)="onTimeChange($event)"></p-datePicker>
-      <span>{{ currentTime | date:'HH:mm' }}</span>
+    <div class="time-control flex align-items-center gap-3 mb-1">
+      <label class="font-medium text-lg">Simulationszeit:</label>
+      <p-datePicker [(ngModel)]="currentTime"
+                  [timeOnly]="true"
+                  (onSelect)="onTimeChange($event)">
+      </p-datePicker>
     </div>
 
-    <!-- Darstellung der Ampeln -->
-    <div class="traffic-lights">
-      <div class="light-group">
-        <h3>Fahrtrichtung A</h3>
-        <div class="light" [ngClass]="lightA"></div>
-      </div>
-      <div class="light-group">
-        <h3>Fahrtrichtung B</h3>
-        <div class="light" [ngClass]="lightB"></div>
-      </div>
-    </div>
+    <!-- Kreuzung -->
+    <div class="intersection-container">
+      <div class="intersection">
+        <!-- Straßen mit Asphalt-Textur -->
+        <div class="road horizontal">
+          <div class="lane-markings"></div>
+        </div>
+        <div class="road vertical">
+          <div class="lane-markings"></div>
+        </div>
 
-    <!-- Konfiguration der Ampelphasenzeiten -->
-    <div class="timing-settings">
-      <h4>Zeiten der Ampelphasen (in Sekunden)</h4>
-      <div class="timing-input">
-        <label>Grün: </label>
-        <input type="number" [(ngModel)]="greenTime" (change)="updateTimings()" />
-      </div>
-      <div class="timing-input">
-        <label>Gelb: </label>
-        <input type="number" [(ngModel)]="yellowTime" (change)="updateTimings()" />
-      </div>
-      <div class="timing-input">
-        <label>Rot: </label>
-        <input type="number" [(ngModel)]="redTime" (change)="updateTimings()" />
+        <!-- Ampeln mit realistischer Positionierung -->
+        <div *ngFor="let direction of ['north', 'south', 'east', 'west']"
+             class="traffic-light-container {{direction}}">
+          <div class="traffic-light">
+            <div class="housing">
+              <!-- Reihenfolge der Lichter geändert -->
+              <div class="light green"
+                   [ngClass]="{'active': getLightState(direction, 'green')}"></div>
+              <div class="light yellow"
+                   [ngClass]="{'active': getLightState(direction, 'yellow')}"></div>
+              <div class="light red"
+                   [ngClass]="{'active': getLightState(direction, 'red')}"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Statusanzeige -->
-    <div class="status">
-      <p>Status:
-        <span *ngIf="!trafficSystemOn">Ampelanlage ist ausgeschaltet.</span>
-        <span *ngIf="systemError">Systemfehler!</span>
-        <span *ngIf="maintenanceMode && !systemError">Wartungsmodus aktiv.</span>
-      </p>
+    <div class="status mt-4 text-center">
+      <p-toast></p-toast>
+      <p-tag [severity]="getStatusSeverity()"
+             [value]="getStatusText()"
+             icon="{{ getStatusIcon() }}"
+             class="text-xl py-2 px-4">
+      </p-tag>
     </div>
-  </p-panel>
+  </p-card>
 </div>

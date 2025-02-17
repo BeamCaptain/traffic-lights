@@ -1,58 +1,214 @@
-.container {
-  padding: 20px;
+//.container {
+//  padding: 20px;
+//}
+//
+//.controls, .time-control, .status {
+//  margin-bottom: 20px;
+//}
+//
+//.controls p-button {
+//  margin-right: 10px;
+//}
+//
+//.time-control label {
+//  margin-right: 10px;
+//}
+//
+///* Kreuzung */
+//.intersection-container {
+//  display: flex;
+//  justify-content: center;
+//  margin: 20px 0;
+//}
+//
+//.intersection {
+//  position: relative;
+//  width: 300px;
+//  height: 300px;
+//  background-color: #ddd;
+//  border: 2px solid #333;
+//}
+//
+///* Straßen */
+//.road {
+//  position: absolute;
+//  background-color: #666;
+//}
+//
+//.road.horizontal {
+//  top: 50%;
+//  left: 0;
+//  width: 100%;
+//  height: 60px;
+//  transform: translateY(-50%);
+//}
+//
+//.road.vertical {
+//  left: 50%;
+//  top: 0;
+//  width: 60px;
+//  height: 100%;
+//  transform: translateX(-50%);
+//}
+//
+///* Ampel-Container */
+//.traffic-light-container {
+//  position: absolute;
+//  text-align: center;
+//}
+//
+//.traffic-light-container.top {
+//  top: -120px;
+//  left: 50%;
+//  transform: translateX(-50%);
+//}
+//
+//.traffic-light-container.bottom {
+//  bottom: -120px;
+//  left: 50%;
+//  transform: translateX(-50%);
+//}
+//
+///* Ampelgehäuse */
+//.traffic-light {
+//  background-color: #333;
+//  padding: 10px;
+//  border-radius: 5px;
+//  width: 80px;
+//}
+//
+//.traffic-light .light {
+//  width: 60px;
+//  height: 60px;
+//  margin: 10px auto;
+//  border-radius: 50%;
+//  background-color: #111;
+//  opacity: 0.3;
+//  transition: opacity 0.3s;
+//}
+//
+///* Wenn aktiv, leuchtet die Lampe */
+//.traffic-light .light.active {
+//  opacity: 1;
+//}
+//
+//.traffic-light .red.active {
+//  background-color: red;
+//}
+//
+//.traffic-light .yellow.active {
+//  background-color: yellow;
+//}
+//
+//.traffic-light .green.active {
+//  background-color: green;
+//}
+
+/* traffic.component.scss */
+.intersection-container {
+  padding: 2rem;
+  background: #616161; /* Asphaltfarbe */
 }
 
-.controls, .time-control, .traffic-lights, .timing-settings, .status {
-  margin-bottom: 20px;
+.intersection {
+  position: relative;
+  width: 600px;
+  height: 600px;
+  margin: 0 auto;
+  border: 3px solid #454545;
+  border-radius: 15px;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
 }
 
-.controls p-button {
-  margin-right: 10px;
+.road {
+  position: absolute;
+  background: #4a4a4a;
+
+  &.horizontal {
+    width: 100%;
+    height: 120px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &.vertical {
+    width: 120px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
-.time-control label {
-  margin-right: 10px;
+.lane-markings {
+  position: absolute;
+  background: repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 40px,
+      #ffd700 40px,
+      #ffd700 60px
+  );
+  width: 100%;
+  height: 4px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-.traffic-lights {
-  display: flex;
-  justify-content: space-around;
+.traffic-light-container {
+  position: absolute;
+  z-index: 2;
+
+  &.north { top: -60px; left: 50%; transform: translateX(-50%); }
+  &.south { bottom: -60px; left: 50%; transform: translateX(-50%) rotate(180deg); }
+  &.east { right: -60px; top: 50%; transform: translateY(-50%) rotate(90deg); }
+  &.west { left: -60px; top: 50%; transform: translateY(-50%) rotate(-90deg); }
 }
 
-.light-group {
-  text-align: center;
-}
+.traffic-light {
+  .housing {
+    background: #333;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
 
-.light {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background-color: grey;
-  margin: 10px auto;
-  border: 2px solid #000;
-}
+    &::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 50px;
+      background: #222;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
 
-/* Farbliche Darstellung der Leuchten */
-.light.green {
-  background-color: green;
-}
+  .light {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    opacity: 0.3;
+    transition: all 0.3s ease;
+    position: relative;
+    border: 2px solid rgba(0,0,0,0.2);
 
-.light.yellow {
-  background-color: yellow;
-}
+    &.active {
+      opacity: 1;
+      box-shadow: 0 0 20px currentColor;
+      &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4) 0%, transparent 60%);
+      }
+    }
 
-.light.red {
-  background-color: red;
-}
+    &.red { background: #ff4444; }
+    &.yellow { background: #ffdd44; }
+    &.green { background: #44dd44; }
+    }
+  }
 
-.light.off {
-  background-color: #ccc;
-}
-
-.timing-input {
-  margin: 5px 0;
-}
-
-.timing-input label {
-  margin-right: 5px;
-}
