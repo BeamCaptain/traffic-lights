@@ -1,0 +1,58 @@
+.container {
+  padding: 20px;
+}
+
+.controls, .time-control, .traffic-lights, .timing-settings, .status {
+  margin-bottom: 20px;
+}
+
+.controls p-button {
+  margin-right: 10px;
+}
+
+.time-control label {
+  margin-right: 10px;
+}
+
+.traffic-lights {
+  display: flex;
+  justify-content: space-around;
+}
+
+.light-group {
+  text-align: center;
+}
+
+.light {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: grey;
+  margin: 10px auto;
+  border: 2px solid #000;
+}
+
+/* Farbliche Darstellung der Leuchten */
+.light.green {
+  background-color: green;
+}
+
+.light.yellow {
+  background-color: yellow;
+}
+
+.light.red {
+  background-color: red;
+}
+
+.light.off {
+  background-color: #ccc;
+}
+
+.timing-input {
+  margin: 5px 0;
+}
+
+.timing-input label {
+  margin-right: 5px;
+}

@@ -1,0 +1,55 @@
+<div class="container">
+  <p-panel header="Ampelanlage Simulation">
+    <!-- Steuerungselemente -->
+    <div class="controls">
+      <p-button label="Ampelanlage {{trafficSystemOn ? 'AUS' : 'EIN'}}" (onClick)="toggleTrafficSystem()"></p-button>
+      <p-button label="Systemfehler simulieren" (onClick)="simulateSystemError()"></p-button>
+      <p-button label="Wartungsmodus {{maintenanceMode ? 'AUS' : 'EIN'}}" (onClick)="toggleMaintenanceMode()"></p-button>
+    </div>
+
+    <!-- Zeitsteuerung -->
+    <div class="time-control">
+      <label>Aktuelle Zeit (manuell einstellbar): </label>
+      <p-datePicker timeOnly="true" hourFormat="24" [(ngModel)]="currentTime" (onSelect)="onTimeChange($event)"></p-datePicker>
+      <span>{{ currentTime | date:'HH:mm' }}</span>
+    </div>
+
+    <!-- Darstellung der Ampeln -->
+    <div class="traffic-lights">
+      <div class="light-group">
+        <h3>Fahrtrichtung A</h3>
+        <div class="light" [ngClass]="lightA"></div>
+      </div>
+      <div class="light-group">
+        <h3>Fahrtrichtung B</h3>
+        <div class="light" [ngClass]="lightB"></div>
+      </div>
+    </div>
+
+    <!-- Konfiguration der Ampelphasenzeiten -->
+    <div class="timing-settings">
+      <h4>Zeiten der Ampelphasen (in Sekunden)</h4>
+      <div class="timing-input">
+        <label>Grün: </label>
+        <input type="number" [(ngModel)]="greenTime" (change)="updateTimings()" />
+      </div>
+      <div class="timing-input">
+        <label>Gelb: </label>
+        <input type="number" [(ngModel)]="yellowTime" (change)="updateTimings()" />
+      </div>
+      <div class="timing-input">
+        <label>Rot: </label>
+        <input type="number" [(ngModel)]="redTime" (change)="updateTimings()" />
+      </div>
+    </div>
+
+    <!-- Statusanzeige -->
+    <div class="status">
+      <p>Status:
+        <span *ngIf="!trafficSystemOn">Ampelanlage ist ausgeschaltet.</span>
+        <span *ngIf="systemError">Systemfehler!</span>
+        <span *ngIf="maintenanceMode && !systemError">Wartungsmodus aktiv.</span>
+      </p>
+    </div>
+  </p-panel>
+</div>
