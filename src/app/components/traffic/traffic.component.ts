@@ -75,14 +75,8 @@ export class TrafficComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.startSimulation();
 
-
-    //die uhrzeit soll weiterlaufen also die uhrzeit soll sich aktualisieren aber mit der stunde die eingestellt wurde soll berücksichtigt werden
-
-    //die uhr soll sich aktualisieren
-
     interval(1000).subscribe(() => {
       const date = this.currentTime;
-      //manuell die zeit weiterlaufen lassen
       date.setSeconds(date.getSeconds() + 1);
       this.currentTime = date;
     });

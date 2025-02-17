@@ -7,6 +7,7 @@ import {MessageService} from 'primeng/api';
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
+  standalone: true,
   providers: [MessageService]
 })
 export class AppComponent {
